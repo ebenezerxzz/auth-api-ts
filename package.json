@@ -1,0 +1,30 @@
+{
+  "name": "auth-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon --exec ts-node src/server.ts",
+    "typeorm": "npx ts-node node_modules/typeorm/cli.js",
+    "migration:create": "npx typeorm migration:create src/database/migrations/$npm_config_filename",
+    "migration:revert": "npx typeorm migration:revert",
+    "migration:run": "npx typeorm migration:run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.0",
+    "typeorm": "^0.3.22"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "nodemon": "^3.1.9",
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
