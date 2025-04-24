@@ -1,28 +1,31 @@
 import { PrimaryGeneratedColumn , Column, Entity } from "typeorm";
-import { EntityUserInterface } from "../../interfaces/entity_user_interface";
 
 @Entity('user')
 export class User {
-    constructor({ id, email, phone, createdat, password }: EntityUserInterface) {
+    constructor(id: number, username: string, email: string, phone: string, createdat: string, password: string) {
         this.id = id;
+        this.username = username;
         this.email = email;
         this.phone = phone;
-        this.createdat = createdat;
         this.password = password;
+        this.createdat = createdat;
     }
-    
+
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column()
+    username: string;
     
     @Column()
     email: string;
-
+    
     @Column()
     phone: string;
-
+    
+    @Column()
+    password: string;
+    
     @Column()
     createdat: string;
-
-    @Column()
-    password: string
 }

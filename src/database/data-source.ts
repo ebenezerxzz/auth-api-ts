@@ -9,10 +9,10 @@ export const MainDataSource = new DataSource({
     password: "123456",
     database: "inovadb",
     entities: [
-        
+        User
     ],
     migrations: [
-        "src/database/migrations/**/*.ts"
+        "src/database/migrations/*.ts"
     ],
     synchronize: false
 })
