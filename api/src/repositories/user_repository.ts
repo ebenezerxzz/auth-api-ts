@@ -1,6 +1,7 @@
 import { MainDataSource } from "../../../src/database/data-source";
 import { MetadataAlreadyExistsError, Repository } from "typeorm";
 import { User } from "../../../../backend/src/entities/User";
+import { createUserDto } from "../../../interfaces/create_user_dto_interface";
 
 export class UserRepository {
     private repository: Repository<User>;
@@ -16,9 +17,9 @@ export class UserRepository {
         return await this.repository.findOneBy({ id });
     }
 
-    async createNewUser(user: User): Promise<User | null> {
-        const newUser = this.repository.create(user);
-        return await this.repository.save(newUser);
+    async createNewUser(user: createUserDto): Promise<User> {
+        const newUser = this.repository.save(user);
+        return newUser;
     }
 
     async deleteUser(id: number) {

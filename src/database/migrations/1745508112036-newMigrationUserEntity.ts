@@ -37,13 +37,7 @@ export class NewMigrationUserEntity1745508112036 implements MigrationInterface {
                         type: "varchar",
                         length: "12",
                         isNullable: false
-                    },
-                    {
-                        name: "createdat",
-                        type: "date",
-                        isNullable: false
-                    },
-                    
+                    }
                 ]
             })
         );

@@ -1,9 +1,10 @@
-import Express from "express";
+import express from "express";
+import bodyParser from "body-parser";
 import { MainDataSource } from "./database/data-source";
 
 import router from "../api/src/routes/router";
 
-const server = Express();
+const server = express();
 const port: number = 3000;
 const host: string = "localhost";
 
@@ -12,7 +13,8 @@ MainDataSource.initialize()
         console.log(`Connected at database!📦`)
     })
     .then(() => {
-        server.use(Express.json());
+        server.use(bodyParser.json());
+        server.use(express.json());
         server.use(router);
         server.listen(port, host, () => {
             console.log(`Server is running in ( http://${host}:${port})`)

@@ -1,7 +1,10 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 import { UserRepository } from "../repositories/user_repository";
 import { User } from "../../../src/entities/User";
 
-import { Request, Response } from "express";
+import { createUserDto } from "../../../interfaces/create_user_dto_interface";
 
 export class UserService {
     private userRepository = new UserRepository();
@@ -16,12 +19,23 @@ export class UserService {
         return registerById;
     }
 
-    async createUser(dataUser: User): Promise<User | null> {
-        const exists = await this.userRepository.findByEmail(dataUser.email!);
-        if(exists) {
+    async createUser(dataUser: createUserDto): Promise<User | undefined> {
+        const exists = await this.userRepository.findByEmail(dataUser.email);
+        console.log(dataUser);
+        if (exists) {
             throw new Error(`This user already exists!: ${exists.email}`);
         }
-        const newUser = await this.userRepository.createNewUser(dataUser);
-        return newUser;
+        try {
+            const hashPassword = await bcrypt.hash(dataUser.password, 8);
+            const userToSave = {
+                ...dataUser,
+                password: hashPassword
+            };
+            const newUser = await this.userRepository.createNewUser(userToSave);
+            return newUser;
+        }
+        catch (error) {
+            console.log(`Error server side: ${error}`)
+        }
     }
 }
