@@ -19,11 +19,14 @@ export class UserService {
         return registerById;
     }
 
+    async loginSession(dataUser: createUserDto) {
+        
+    }
+
     async createUser(dataUser: createUserDto): Promise<User | undefined> {
         const exists = await this.userRepository.findByEmail(dataUser.email);
-        console.log(dataUser);
         if (exists) {
-            throw new Error(`This user already exists!: ${exists.email}`);
+            throw new Error(`This user already exists!: ${exists}`);
         }
         try {
             const hashPassword = await bcrypt.hash(dataUser.password, 8);

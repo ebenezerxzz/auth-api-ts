@@ -1,5 +1,5 @@
 import { MainDataSource } from "../../../src/database/data-source";
-import { MetadataAlreadyExistsError, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { User } from "../../../../backend/src/entities/User";
 import { createUserDto } from "../../../interfaces/create_user_dto_interface";
 
