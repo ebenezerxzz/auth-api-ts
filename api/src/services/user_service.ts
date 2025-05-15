@@ -1,10 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-import { UserRepository } from "../repositories/user_repository";
 import { User } from "../../../src/entities/User";
-
+import { UserRepository } from "../repositories/user_repository";
 import { createUserDto } from "../../../interfaces/create_user_dto_interface";
+import { UserAlreadyExistsError } from "../../Errors/AlreadyExistsUser";
 
 export class UserService {
     private userRepository = new UserRepository();
@@ -20,13 +19,13 @@ export class UserService {
     }
 
     async loginSession(dataUser: createUserDto) {
-        
+
     }
 
-    async createUser(dataUser: createUserDto): Promise<User | undefined> {
+    async createUser(dataUser: createUserDto)  {
         const exists = await this.userRepository.findByEmail(dataUser.email);
         if (exists) {
-            throw new Error(`This user already exists!: ${exists}`);
+            throw new UserAlreadyExistsError("User already exists!");
         }
         try {
             const hashPassword = await bcrypt.hash(dataUser.password, 8);
@@ -38,7 +37,7 @@ export class UserService {
             return newUser;
         }
         catch (error) {
-            console.log(`Error server side: ${error}`)
+            throw new Error(`Error server side: ${error}`)
         }
     }
 }

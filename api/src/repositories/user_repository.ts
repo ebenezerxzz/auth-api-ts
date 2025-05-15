@@ -18,7 +18,7 @@ export class UserRepository {
     }
 
     async createNewUser(user: createUserDto): Promise<User> {
-        const newUser = this.repository.save(user);
+        const newUser = await this.repository.save(user);
         return newUser;
     }
 

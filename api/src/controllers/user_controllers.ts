@@ -1,9 +1,12 @@
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import { Request, Response } from "express";
 import { UserService } from "../services/user_service";
+import { generateToken } from "../../Auth/generate_token";
 
 const userService = new UserService();
 
-export const get_users = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
    try {
       const data = await userService.getAll();
       res.status(200).json(data);
@@ -14,29 +17,30 @@ export const get_users = async (req: Request, res: Response): Promise<void> => {
    }
 }
 
-export const login_session = (req: Request, res: Response) => {
-   const { email, password } = req.body;
-   
-}
-
-export const register_new_user = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response): Promise<| any> => {
    const required = ["username", "email", "phone", "password"]
-   
+   const secretKey = process.env.SECRET_KEY as string;
+
    const { username, email, phone, password } = req.body;
-   const isFull = required.includes(req.body);
-   if (!isFull) {
-      res.status(400).json({ MessageError: "All credentials is required!!" });
+   for (let i of required) {
+      if (!req.body[i])
+         res.status(400).json({ MessageError: "All credentials is required!!" });
    }
    try {
       const user = await userService.createUser({ username, email, phone, password });
-      //Return the JWT where
-      res.status(200).json({ user: user });
+      const payload = {
+         username: user.username,
+         email: user.email
+      };
+      const token = await generateToken({ payload });
+      res.status(200).json({ Jwt: token });
    }
    catch (error) {
-      res.status(409).json({ messageError: error });
+      res.status(409).json({ MessageError: error });
+      console.log(error)
    }
 }
 
-export const protected_router = (req: Request, res: Response) => {
-   res.status(200).json({ message: "Rota acessada com sucesso! " })
+export const protectedRouter = (req: Request, res: Response) => {
+   res.status(200);
 }
